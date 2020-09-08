@@ -7,25 +7,15 @@ pub fn it(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    let lit_str = {
-        let a = args.clone();
-        parse_macro_input!(a as syn::LitStr)
-    };
-
-    let input_item = {
-        let i = input.clone();
-        parse_macro_input!(i as syn::Item)
-    };
-
+    let lit_str = parse_macro_input!(args as syn::LitStr);
+    let input_item = parse_macro_input!(input as syn::Item);
     let syn_fn = match input_item {
         syn::Item::Fn(x) => x,
         _ => panic!("not function"),
     };
-
     let fn_ret_type = syn_fn.sig.output;
     let fn_block = syn_fn.block;
     let fn_attrs = syn_fn.attrs;
-
     let ident = {
         let s = lit_str.value();
         let new_str: String = s
