@@ -42,6 +42,7 @@ pub fn it(
         _ => panic!("not ident"),
     };
     let q = quote! {
+        #[test]
         fn #ident() #fn_ret_type #fn_block
     };
     q.into()
