@@ -6,7 +6,7 @@ it-should style for Rust
 ```toml
 # Cargo.toml
 
-[dependencies]
+[dev-dependencies]
 specit = { git = "https://github.com/nwtgck/specit-rust.git" }
 ```
 
