@@ -15,7 +15,16 @@ pub fn it(
     };
     let fn_ret_type = syn_fn.sig.output;
     let fn_block = syn_fn.block;
-    let fn_attrs = syn_fn.attrs;
+    let mut fn_attrs = syn_fn.attrs;
+    let fn_asyncness = syn_fn.sig.asyncness;
+    // If not async function
+    if fn_asyncness.is_none() {
+        // Add #[test] attribute
+        // NOTE: A test function can not have #[test] normally, but in some cases such as #[tokio::test] allows to use async function.
+        let a: syn::Attribute = syn::parse_quote!{#[test]};
+        fn_attrs.push(a);
+    }
+
     let ident = {
         let s = lit_str.value();
         let new_str: String = s
@@ -29,9 +38,9 @@ pub fn it(
     };
 
     let q = quote! {
-        #[test]
+        #[allow(non_snake_case)]
         #(#fn_attrs)*
-        fn #ident() #fn_ret_type #fn_block
+        #fn_asyncness fn #ident() #fn_ret_type #fn_block
     };
     q.into()
 }

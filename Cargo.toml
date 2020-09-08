@@ -10,5 +10,8 @@ edition = "2018"
 syn = { version = "1.0", features = ["full"] }
 quote = "1.0"
 
+[dev-dependencies]
+tokio = { version = "0.2", features = ["rt-core", "macros"] }
+
 [lib]
 proc-macro = true
