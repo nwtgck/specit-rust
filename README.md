@@ -27,7 +27,21 @@ fn t() {
 }
 ```
 
+## `#[tokio::test]` support
+
+
+You can use with `#[tokio::test]` for asynchronous functions.
+```rust
+use specit::it;
+
+#[it("should work with tokio::test")]
+#[tokio::test]
+async fn t() {
+    let f = async { 10 };
+    assert_eq!(f.await, 10);
+}
+```
+
 ## Internal
 
 Internally, the functions above are `should_be_correct()` and `should_be_wrong()`. You can use any string. Non-alphanum characters are encoded into `'_'`.
-
