@@ -24,25 +24,23 @@ pub fn it(
 
     let fn_ret_type = syn_fn.sig.output;
     let fn_block = syn_fn.block;
+    let fn_attrs = syn_fn.attrs;
 
-    let fn_name = input.clone().into_iter().collect::<Vec<_>>()[1].clone();
-
-    let ident = match fn_name {
-        i @ proc_macro::TokenTree::Ident(_) => {
-            let s = lit_str.value();
-            let new_str: String = s
-                .chars()
-                .map(|x| match x {
-                    'A'..='Z' | 'a'..='z' | '0'..='9' => x,
-                    _ => '_',
-                })
-                .collect();
-            syn::Ident::new(&new_str, i.span().into())
-        }
-        _ => panic!("not ident"),
+    let ident = {
+        let s = lit_str.value();
+        let new_str: String = s
+            .chars()
+            .map(|x| match x {
+                'A'..='Z' | 'a'..='z' | '0'..='9' => x,
+                _ => '_',
+            })
+            .collect();
+        syn::Ident::new(&new_str, syn_fn.sig.ident.span())
     };
+
     let q = quote! {
         #[test]
+        #(#fn_attrs)*
         fn #ident() #fn_ret_type #fn_block
     };
     q.into()
