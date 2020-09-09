@@ -85,7 +85,7 @@ async fn t() {
 
 ### `features = ["lib-wasm-bindgen"]`
 
-Use `#[it(...)]` for instead of `#[wasm_bindgen_test::wasm_bindgen_test]` as follows.
+Use `#[it(...)]` instead of `#[wasm_bindgen_test::wasm_bindgen_test]` as follows.
 
 ```rust
 use specit::wasm_bindgen_test_it as it;
