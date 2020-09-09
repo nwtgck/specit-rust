@@ -1,7 +1,7 @@
 # specit
 ![CI](https://github.com/nwtgck/specit-rust/workflows/CI/badge.svg)
 
-it-should style for Rust
+Spec "it" for Rust testing
 
 ## Install
 
@@ -29,10 +29,9 @@ fn t() {
 }
 ```
 
-## `#[tokio::test]` support
+## #[tokio::test] support
 
-
-You can use with `#[tokio::test]` for asynchronous functions.
+You can test with `#[tokio::test]` for asynchronous functions.
 ```rust
 use specit::it;
 
@@ -41,6 +40,53 @@ use specit::it;
 async fn t() {
     let f = async { 10 };
     assert_eq!(f.await, 10);
+}
+```
+
+You can get short your code using the following features in each asynchronous runtime.
+
+### `features = ["tokio"]`
+
+You can use `use specit::tokio_it as it` for testing asynchronous functions without `#[tokio::test]` like the following.
+
+```rust
+use specit::tokio_it as it;
+
+#[it("should work with tokio")]
+async fn t() {
+    let f = async { 10 };
+    assert_eq!(f.await, 10);
+}
+```
+
+### `features = ["async-std"]`
+
+Use `#[it(...)]` instead of `#[async_std::test]` as follows.
+
+```rust
+use specit::async_std_it as it;
+
+#[it("should be correct")]
+async fn t() {
+    let f = async { 10 };
+    assert_eq!(f.await, 10);
+}
+```
+
+### `features = ["lib-wasm-bindgen"]`
+
+Use `#[it(...)]` for instead of `#[wasm_bindgen_test::wasm_bindgen_test]` as follows.
+
+```rust
+use specit::wasm_bindgen_test_it as it;
+use wasm_bindgen::prelude::JsValue;
+use wasm_bindgen_futures::JsFuture;
+
+#[it("should be correct")]
+async fn t() {
+    let promise = js_sys::Promise::resolve(&JsValue::from(42));
+    let x = JsFuture::from(promise).await.unwrap();
+    assert_eq!(x, 42);
 }
 ```
 
