@@ -7,6 +7,59 @@ pub fn it(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
+    general_it(args, input, syn::parse_quote! {#[test]}, None)
+}
+
+#[cfg(feature = "tokio")]
+#[proc_macro_attribute]
+pub fn tokio_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    general_it(
+        args,
+        input,
+        syn::parse_quote! {#[test]},
+        Some(syn::parse_quote! {#[tokio::test]}),
+    )
+}
+
+#[cfg(feature = "async-std")]
+#[proc_macro_attribute]
+pub fn async_std_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    general_it(
+        args,
+        input,
+        syn::parse_quote! {#[test]},
+        Some(syn::parse_quote! {#[async_std::test]}),
+    )
+}
+
+#[cfg(feature = "lib-wasm-bindgen")]
+#[proc_macro_attribute]
+pub fn wasm_bindgen_test_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    general_it(
+        args,
+        input,
+        syn::parse_quote! {#[wasm_bindgen_test::wasm_bindgen_test]},
+        Some(syn::parse_quote! {#[wasm_bindgen_test::wasm_bindgen_test]}),
+    )
+}
+
+// NOTE: This function is used in macros
+#[allow(dead_code)]
+fn general_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+    sync_attribute_option: syn::Attribute,
+    async_attribute_option: Option<syn::Attribute>,
+) -> proc_macro::TokenStream {
     let lit_str = parse_macro_input!(args as syn::LitStr);
     let input_item = parse_macro_input!(input as syn::Item);
     let syn_fn = match input_item {
@@ -15,7 +68,19 @@ pub fn it(
     };
     let fn_ret_type = syn_fn.sig.output;
     let fn_block = syn_fn.block;
-    let fn_attrs = syn_fn.attrs;
+    let mut fn_attrs = syn_fn.attrs;
+    let fn_asyncness = syn_fn.sig.asyncness;
+
+    // If async function
+    if fn_asyncness.is_some() {
+        // If async attribute is found
+        if let Some(async_attribute) = async_attribute_option {
+            fn_attrs.push(async_attribute);
+        }
+    } else {
+        fn_attrs.push(sync_attribute_option);
+    }
+
     let ident = {
         let s = lit_str.value();
         let new_str: String = s
@@ -29,9 +94,9 @@ pub fn it(
     };
 
     let q = quote! {
-        #[test]
+        #[allow(non_snake_case)]
         #(#fn_attrs)*
-        fn #ident() #fn_ret_type #fn_block
+        #fn_asyncness fn #ident() #fn_ret_type #fn_block
     };
     q.into()
 }

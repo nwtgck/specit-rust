@@ -1,14 +1,31 @@
 [package]
 name = "specit"
-version = "0.1.0"
+version = "0.2.0"
+description = "Spec \"it\" for Rust testing"
+readme = "README.md"
+repository = "https://github.com/nwtgck/specit-rust"
+license = "MIT"
 authors = ["Ryo Ota <nwtgck@nwtgck.org>"]
+keywords = ["spec", "testing", "test"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+lib-wasm-bindgen = [ "wasm-bindgen", "wasm-bindgen-test", "wasm-bindgen-futures", "js-sys" ]
+full = ["tokio", "async-std", "lib-wasm-bindgen"]
+
 [dependencies]
 syn = { version = "1.0", features = ["full"] }
 quote = "1.0"
+
+# Optionals
+tokio = { version = "0.2", features = ["rt-core", "macros"], optional = true }
+async-std = { version = "1.6", features = ["attributes"], optional = true }
+wasm-bindgen = { version = "0.2", optional = true }
+wasm-bindgen-test = { version = "0.3", optional = true }
+wasm-bindgen-futures = { version = "0.4", optional = true }
+js-sys = { version = "0.3", optional = true }
 
 [lib]
 proc-macro = true
