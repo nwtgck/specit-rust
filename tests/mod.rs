@@ -27,6 +27,11 @@ mod pure_it_with_tokio {
 mod tokio {
     use specit::tokio_it as it;
 
+    #[it("should work with non-async function")]
+    fn t() {
+        assert_eq!(2 + 2, 4);
+    }
+
     #[it("should work with tokio")]
     async fn t() {
         let f = async { 10 };
@@ -45,7 +50,7 @@ mod tokio {
 mod async_std {
     use specit::async_std_it as it;
 
-    #[it("should work non-async function")]
+    #[it("should work with non-async function")]
     fn t() {
         assert_eq!(2 + 2, 4);
     }
