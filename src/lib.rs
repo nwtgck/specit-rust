@@ -19,6 +19,15 @@ pub fn tokio_it(
     general_it(args, input, Some(syn::parse_quote! {#[tokio::test]}))
 }
 
+#[cfg(feature = "async-std")]
+#[proc_macro_attribute]
+pub fn async_std_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    general_it(args, input, Some(syn::parse_quote! {#[async_std::test]}))
+}
+
 // NOTE: This function is used in macros
 #[allow(dead_code)]
 fn general_it(

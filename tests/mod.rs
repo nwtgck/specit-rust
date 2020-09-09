@@ -40,3 +40,26 @@ mod tokio {
         assert_eq!(f.await, 12);
     }
 }
+
+#[cfg(feature = "async-std")]
+mod async_std {
+    use specit::async_std_it as it;
+
+    #[it("should work non-async function")]
+    fn t() {
+        assert_eq!(2 + 2, 4);
+    }
+
+    #[it("should be correct")]
+    async fn t() {
+        let f = async { 10 };
+        assert_eq!(f.await, 10);
+    }
+
+    #[it("should panic with async_std")]
+    #[should_panic]
+    async fn t() {
+        let f = async { 10 };
+        assert_eq!(f.await, 12);
+    }
+}
