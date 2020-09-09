@@ -9,7 +9,7 @@ Spec "it" for Rust testing
 # Cargo.toml
 
 [dev-dependencies]
-specit = { git = "https://github.com/nwtgck/specit-rust.git" }
+specit = "0.2.0"
 ```
 
 ## Usage
@@ -27,6 +27,16 @@ fn t() {
 fn t() {
     assert_eq!(1 + 1, 3);
 }
+```
+
+The test output is like the following.
+
+```
+running 2 tests
+test should_be_correct ... ok
+test should_be_wrong ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
 ## #[tokio::test] support
