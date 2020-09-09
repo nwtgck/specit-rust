@@ -7,7 +7,7 @@ pub fn it(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    general_it(args, input, None)
+    general_it(args, input, syn::parse_quote! {#[test]}, None)
 }
 
 #[cfg(feature = "tokio")]
@@ -16,7 +16,12 @@ pub fn tokio_it(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    general_it(args, input, Some(syn::parse_quote! {#[tokio::test]}))
+    general_it(
+        args,
+        input,
+        syn::parse_quote! {#[test]},
+        Some(syn::parse_quote! {#[tokio::test]}),
+    )
 }
 
 #[cfg(feature = "async-std")]
@@ -25,7 +30,26 @@ pub fn async_std_it(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    general_it(args, input, Some(syn::parse_quote! {#[async_std::test]}))
+    general_it(
+        args,
+        input,
+        syn::parse_quote! {#[test]},
+        Some(syn::parse_quote! {#[async_std::test]}),
+    )
+}
+
+#[cfg(feature = "lib-wasm-bindgen")]
+#[proc_macro_attribute]
+pub fn wasm_bindgen_test_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    general_it(
+        args,
+        input,
+        syn::parse_quote! {#[wasm_bindgen_test::wasm_bindgen_test]},
+        Some(syn::parse_quote! {#[wasm_bindgen_test::wasm_bindgen_test]}),
+    )
 }
 
 // NOTE: This function is used in macros
@@ -33,6 +57,7 @@ pub fn async_std_it(
 fn general_it(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
+    sync_attribute_option: syn::Attribute,
     async_attribute_option: Option<syn::Attribute>,
 ) -> proc_macro::TokenStream {
     let lit_str = parse_macro_input!(args as syn::LitStr);
@@ -53,7 +78,7 @@ fn general_it(
             fn_attrs.push(async_attribute);
         }
     } else {
-        fn_attrs.push(syn::parse_quote! {#[test]});
+        fn_attrs.push(sync_attribute_option);
     }
 
     let ident = {

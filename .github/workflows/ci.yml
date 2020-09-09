@@ -11,4 +11,7 @@ jobs:
       - run: cargo test
       - run: cargo test --features="tokio"
       - run: cargo test --features="async-std"
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - run: wasm-pack test --node -- --features="lib-wasm-bindgen"
       - run: cargo test --features="full"

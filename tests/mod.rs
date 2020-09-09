@@ -68,3 +68,31 @@ mod async_std {
         assert_eq!(f.await, 12);
     }
 }
+
+#[cfg(feature = "lib-wasm-bindgen")]
+mod wasm_bindgen_test {
+    use specit::wasm_bindgen_test_it as it;
+    use wasm_bindgen::prelude::JsValue;
+    use wasm_bindgen_futures::JsFuture;
+
+    #[it("should work with non-async function")]
+    fn t() {
+        assert_eq!(2 + 2, 4);
+    }
+
+    #[it("should be correct")]
+    async fn t() {
+        let promise = js_sys::Promise::resolve(&JsValue::from(42));
+        let x = JsFuture::from(promise).await.unwrap();
+        assert_eq!(x, 42);
+    }
+
+    // TODO: "wasm_bindgen_test" is not supported #[should_panic] (ref: https://github.com/rustwasm/wasm-bindgen/issues/2286)
+    // #[it("should be wrong")]
+    // #[should_panic]
+    // async fn t() {
+    //     let promise = js_sys::Promise::resolve(&JsValue::from(42));
+    //     let x = JsFuture::from(promise).await.unwrap();
+    //     assert_eq!(x, 43);
+    // }
+}
