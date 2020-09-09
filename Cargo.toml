@@ -1,9 +1,10 @@
 [package]
 name = "specit"
-version = "0.1.0"
+version = "0.2.0"
 description = "Spec \"it\" for Rust testing"
 readme = "README.md"
 repository = "https://github.com/nwtgck/specit-rust"
+license = "MIT"
 authors = ["Ryo Ota <nwtgck@nwtgck.org>"]
 keywords = ["spec", "testing", "test"]
 edition = "2018"
