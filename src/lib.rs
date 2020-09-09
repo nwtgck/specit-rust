@@ -7,6 +7,25 @@ pub fn it(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
+    general_it(args, input, None)
+}
+
+#[cfg(feature = "lib-tokio")]
+#[proc_macro_attribute]
+pub fn tokio_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    general_it(args, input, Some(syn::parse_quote! {#[tokio::test]}))
+}
+
+// NOTE: This function is used in macros
+#[allow(dead_code)]
+fn general_it(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+    async_attribute_option: Option<syn::Attribute>,
+) -> proc_macro::TokenStream {
     let lit_str = parse_macro_input!(args as syn::LitStr);
     let input_item = parse_macro_input!(input as syn::Item);
     let syn_fn = match input_item {
@@ -17,12 +36,15 @@ pub fn it(
     let fn_block = syn_fn.block;
     let mut fn_attrs = syn_fn.attrs;
     let fn_asyncness = syn_fn.sig.asyncness;
-    // If not async function
-    if fn_asyncness.is_none() {
-        // Add #[test] attribute
-        // NOTE: A test function can not have #[test] normally, but in some cases such as #[tokio::test] allows to use async function.
-        let a: syn::Attribute = syn::parse_quote!{#[test]};
-        fn_attrs.push(a);
+
+    // If async function
+    if fn_asyncness.is_some() {
+        // If async attribute is found
+        if let Some(async_attribute) = async_attribute_option {
+            fn_attrs.push(async_attribute);
+        }
+    } else {
+        fn_attrs.push(syn::parse_quote! {#[test]});
     }
 
     let ident = {
