@@ -10,7 +10,7 @@ pub fn it(
     general_it(args, input, None)
 }
 
-#[cfg(feature = "lib-tokio")]
+#[cfg(feature = "tokio")]
 #[proc_macro_attribute]
 pub fn tokio_it(
     args: proc_macro::TokenStream,

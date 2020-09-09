@@ -11,7 +11,7 @@ fn t() {
     assert_eq!(1 + 1, 3);
 }
 
-#[cfg(feature = "lib-tokio")]
+#[cfg(feature = "tokio")]
 mod pure_it_with_tokio {
     use specit::it;
 
@@ -23,7 +23,7 @@ mod pure_it_with_tokio {
     }
 }
 
-#[cfg(feature = "lib-tokio")]
+#[cfg(feature = "tokio")]
 mod tokio {
     use specit::tokio_it as it;
 

@@ -7,8 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-lib-tokio = ["tokio"]
-full = ["lib-tokio"]
+full = ["tokio"]
 
 [dependencies]
 syn = { version = "1.0", features = ["full"] }
