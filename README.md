@@ -1,4 +1,6 @@
 # specit
+![CI](https://github.com/nwtgck/specit-rust/workflows/CI/badge.svg)
+
 it-should style for Rust
 
 ## Install
