@@ -1,5 +1,5 @@
 # specit
-![CI](https://github.com/nwtgck/specit-rust/workflows/CI/badge.svg)
+[![Crates.io](https://img.shields.io/crates/v/specit)](https://crates.io/crates/specit) [![CI](https://github.com/nwtgck/specit-rust/workflows/CI/badge.svg)](https://github.com/nwtgck/specit-rust/actions)
 
 Spec "it" for Rust testing
 
