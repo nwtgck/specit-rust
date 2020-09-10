@@ -9,7 +9,7 @@ Spec "it" for Rust testing
 # Cargo.toml
 
 [dev-dependencies]
-specit = "0.2.0"
+specit = "0.3.0"
 ```
 
 ## Usage
