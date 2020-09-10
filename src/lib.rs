@@ -52,6 +52,15 @@ pub fn wasm_bindgen_test_it(
     )
 }
 
+fn string_to_alphanum(s: String) -> String {
+    s.chars()
+        .map(|x| match x {
+            'A'..='Z' | 'a'..='z' | '0'..='9' => x,
+            _ => '_',
+        })
+        .collect()
+}
+
 // NOTE: This function is used in macros
 #[allow(dead_code)]
 fn general_it(
@@ -82,14 +91,7 @@ fn general_it(
     }
 
     let ident = {
-        let s = lit_str.value();
-        let new_str: String = s
-            .chars()
-            .map(|x| match x {
-                'A'..='Z' | 'a'..='z' | '0'..='9' => x,
-                _ => '_',
-            })
-            .collect();
+        let new_str: String = string_to_alphanum(lit_str.value());
         syn::Ident::new(&new_str, syn_fn.sig.ident.span())
     };
 
@@ -97,6 +99,31 @@ fn general_it(
         #[allow(non_snake_case)]
         #(#fn_attrs)*
         #fn_asyncness fn #ident() #fn_ret_type #fn_block
+    };
+    q.into()
+}
+
+#[proc_macro_attribute]
+pub fn describe(
+    args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    let lit_str = parse_macro_input!(args as syn::LitStr);
+    let i = input.clone();
+    let item_mod = parse_macro_input!(i as syn::ItemMod);
+
+    let mod_attrs = item_mod.attrs;
+    let (_, mod_content_items) = item_mod.content.expect("no mod content");
+    let mod_ident = {
+        let new_str: String = string_to_alphanum(lit_str.value());
+        syn::Ident::new(&new_str, item_mod.ident.span())
+    };
+
+    let q = quote! {
+        #(#mod_attrs)*
+        mod #mod_ident {
+            #(#mod_content_items)*
+        }
     };
     q.into()
 }

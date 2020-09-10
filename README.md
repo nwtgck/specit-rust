@@ -9,7 +9,7 @@ Spec "it" for Rust testing
 # Cargo.toml
 
 [dev-dependencies]
-specit = "0.2.0"
+specit = "0.3.0"
 ```
 
 ## Usage
@@ -35,6 +35,37 @@ The test output is like the following.
 running 2 tests
 test should_be_correct ... ok
 test should_be_wrong ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+```
+
+### describe
+
+```rust
+use specit::describe;
+
+#[describe("arithmetic operations")]
+mod m {
+    use specit::it;
+
+    #[it("should add two numbers")]
+    pub fn t() {
+        assert_eq!(2 + 2, 4);
+    }
+
+    #[it("should multiple two numbers")]
+    pub fn t() {
+        assert_eq!(3 * 3, 9);
+    }
+}
+```
+
+The test output with `describe` is like the following.
+
+```
+running 2 tests
+test arithmetic_operations::should_add_two_numbers ... ok
+test arithmetic_operations::should_multiple_two_numbers ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
@@ -85,7 +116,7 @@ async fn t() {
 
 ### `features = ["lib-wasm-bindgen"]`
 
-Use `#[it(...)]` for instead of `#[wasm_bindgen_test::wasm_bindgen_test]` as follows.
+Use `#[it(...)]` instead of `#[wasm_bindgen_test::wasm_bindgen_test]` as follows.
 
 ```rust
 use specit::wasm_bindgen_test_it as it;
