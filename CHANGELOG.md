@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [0.3.0] - 2020-09-10
+### Added
+* Add `describe`
+
 ## [0.2.0] - 2020-09-09
 ### Added
 * Add `tokio_it`
@@ -15,5 +19,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ### Added
 * Initial release
 
-[Unreleased]: https://github.com/nwtgck/specit-rust/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/nwtgck/specit-rust/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/nwtgck/specit-rust/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/nwtgck/specit-rust/compare/v0.1.0...v0.2.0
