@@ -1,4 +1,4 @@
-use specit::it;
+use specit::{describe, it};
 
 #[it("should be correct")]
 fn t() {
@@ -9,6 +9,21 @@ fn t() {
 #[should_panic]
 fn t() {
     assert_eq!(1 + 1, 3);
+}
+
+#[describe("arithmetic operations")]
+mod m {
+    use specit::it;
+
+    #[it("should add two numbers")]
+    pub fn t() {
+        assert_eq!(2 + 2, 4);
+    }
+
+    #[it("should multiple two numbers")]
+    pub fn t() {
+        assert_eq!(3 * 3, 9);
+    }
 }
 
 #[cfg(feature = "tokio")]
