@@ -1,15 +1,15 @@
 use specit::{describe, it};
 
-#[it("should be correct")]
-fn t() {
-    assert_eq!(2 + 2, 4);
-}
-
-#[it("should be wrong")]
-#[should_panic]
-fn t() {
-    assert_eq!(1 + 1, 3);
-}
+// #[it("should be correct")]
+// fn t() {
+//     assert_eq!(2 + 2, 4);
+// }
+//
+// #[it("should be wrong")]
+// #[should_panic]
+// fn t() {
+//     assert_eq!(1 + 1, 3);
+// }
 
 #[describe("arithmetic operations")]
 mod m {

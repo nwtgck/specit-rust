@@ -39,6 +39,37 @@ test should_be_wrong ... ok
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
+### describe
+
+```rust
+use specit::describe;
+
+#[describe("arithmetic operations")]
+mod m {
+    use specit::it;
+
+    #[it("should add two numbers")]
+    pub fn t() {
+        assert_eq!(2 + 2, 4);
+    }
+
+    #[it("should multiple two numbers")]
+    pub fn t() {
+        assert_eq!(3 * 3, 9);
+    }
+}
+```
+
+The test output with `describe` is like the following.
+
+```
+running 2 tests
+test arithmetic_operations::should_add_two_numbers ... ok
+test arithmetic_operations::should_multiple_two_numbers ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+```
+
 ## #[tokio::test] support
 
 You can test with `#[tokio::test]` for asynchronous functions.
