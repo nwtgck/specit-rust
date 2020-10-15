@@ -20,7 +20,7 @@ syn = { version = "1.0", features = ["full"] }
 quote = "1.0"
 
 # Optionals
-tokio = { version = "0.2", features = ["rt-core", "macros"], optional = true }
+tokio = { version = "0.3", features = ["rt-core", "macros"], optional = true }
 async-std = { version = "1.6", features = ["attributes"], optional = true }
 wasm-bindgen = { version = "0.2", optional = true }
 wasm-bindgen-test = { version = "0.3", optional = true }
