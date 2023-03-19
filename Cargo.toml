@@ -16,7 +16,7 @@ lib-wasm-bindgen = [ "wasm-bindgen", "wasm-bindgen-test", "wasm-bindgen-futures"
 full = ["tokio", "async-std", "lib-wasm-bindgen"]
 
 [dependencies]
-syn = { version = "1.0", features = ["full"] }
+syn = { version = "2.0", features = ["full"] }
 quote = "1.0"
 
 # Optionals
